@@ -1,10 +1,17 @@
-import { uploadPhoto, createUser } from './utils';
+function guardrail(mathFunction) {
+  const queue = [];
 
-export default function handleProfileSignup() {
-  return Promise
-    .all([uploadPhoto(), createUser()])
-    .then((res) => {
-      console.log(`${res[0].body} ${res[1].firstName} ${res[1].lastName}`);
-    })
-    .catch(() => console.log('Signup system offline'));
+  try {
+    const result = mathFunction();
+    queue.push(result);
+  } catch (error) {
+    queue.push(`Error: ${error.message}`);
+  } finally {
+    queue.push('Guardrail was processed');
+  }
+
+  return queue;
 }
+
+export default guardrail;
+
